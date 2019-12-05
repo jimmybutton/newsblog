@@ -1,1 +1,2 @@
 FLASK_APP=newsblog.py
+FLASK_ENV=development
