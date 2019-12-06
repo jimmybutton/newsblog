@@ -1,5 +1,6 @@
-from flask import render_template
+from flask import render_template, flash, redirect, url_for
 from app import app
+from app.forms import ArticleForm
 
 @app.route('/')
 @app.route('/index')
@@ -20,3 +21,12 @@ def index():
         }
     ]
     return render_template('index.html', title='Home', articles=articles)
+
+@app.route('/create', methods=['GET', 'POST'])
+def create():
+    form = ArticleForm()
+    if form.validate_on_submit():
+        flash('New article submitted: {}, category: {}'.format(
+            form.title.data, form.category.data))
+        return redirect(url_for('index'))
+    return render_template('create.html', title='New Article', form=form)
