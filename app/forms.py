@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, SelectField, FileField
-from wtforms.validators import DataRequired, Regexp
+from wtforms.validators import DataRequired
+from wtforms import validators
 import re
 
 class ArticleForm(FlaskForm):
