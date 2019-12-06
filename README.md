@@ -1,2 +1,2 @@
 # newsblog
-A simple news blog with CRUD functionality
+A simple news blog with CRUD functionality based on flask
