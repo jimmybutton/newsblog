@@ -1,12 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hello!</h1>
     {% for article in articles %}
-    <div>
-        <h2>{{ article.title }}</h2>
-        <p>{{ article.category }}</p>
-        <p>{{ article.content }}</p>
-    </div>
+        <div class="card mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                {% set path= 'uploads/' + article.image %}
+                <img src="{{ url_for('static', filename=path) }}" width="100%">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{ article.title }}</h5>
+                  <p class="card-text">{{ article.content }}</p>
+                  <p class="card-text"><small class="text-muted">{{ article.category }}</small></p>
+                </div>
+              </div>
+            </div>
+          </div>
     {% endfor %}
 {% endblock %}
