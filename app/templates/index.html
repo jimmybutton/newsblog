@@ -1,21 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% for article in articles %}
-        <div class="card mb-3">
-            <div class="row no-gutters">
-              <div class="col-md-4">
-                {% set path= 'uploads/' + article.image %}
-                <img src="{{ url_for('static', filename=path) }}" width="100%">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">{{ article.title }}</h5>
-                  <p class="card-text">{{ article.content }}</p>
-                  <p class="card-text"><small class="text-muted">{{ article.category }}</small></p>
-                </div>
-              </div>
-            </div>
-          </div>
-    {% endfor %}
+<div class="text-center" style="margin-bottom: 16px;">
+  <a href="{{ url_for('create') }}">
+    <button type="button" class="btn btn-primary">
+      <i class="fas fa-plus"></i>
+      New Article
+    </button>
+  </a>
+</div>
+
+{% for article in articles %}
+<div class="card mb-3">
+  <div class="row no-gutters">
+    <div class="card-body">
+      <div class="card-title d-flex justify-content-between">
+        <span class="h3">{{ article.title }}</span>
+        <small class="text-muted align-self-center">{{ article.category }}</small>
+        <span>
+          <button class="btn btn-primary">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-danger">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </span>
+      </div>
+      <div class="card-text">
+        {% set path= 'uploads/' + article.image %}
+        <img src="{{ url_for('static', filename=path) }}" style="float: left; width: 40%; margin: 0 24px 12px 0;">
+        {% set paras = article.content.split('\n') %}
+        {% for p in paras %}
+          {% if p %}
+            <p>{{ p }}</p>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
 {% endblock %}
