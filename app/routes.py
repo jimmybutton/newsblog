@@ -22,8 +22,6 @@ def index():
 def create():
     form = ArticleForm()
     if form.validate_on_submit():
-        flash('New article submitted: {}, category: {}'.format(
-            form.title.data, form.category.data))
         # get file and save it
         f = form.image.data
         filename = secure_filename(f.filename)
@@ -39,5 +37,25 @@ def create():
         )
         db.session.add(article)
         db.session.commit()
+        flash('New article submitted: {}, category: {}'.format(
+            form.title.data, form.category.data))
         return redirect(url_for('index'))
     return render_template('create.html', title='New Article', form=form)
+
+@app.route('/update/<id>', methods=['GET', 'POST'])
+def update(id):
+    article = Article.query.filter_by(id=id).first_or_404()
+    form = ArticleForm()
+    if form.validate_on_submit():
+        # todo: this will need to handle the image somehow
+        article.title = form.title.data
+        article.content = form.content.data
+        article.category = form.category.data
+        db.session.commit()
+        flash("Your changes have been saved.")
+        return redirect(url_for('index'))
+    elif request.method == "GET":
+        form.title.data = article.title
+        form.content.data = article.content
+        form.category.data = article.category
+    return render_template('create.html', title='Edit Article', form=form)
