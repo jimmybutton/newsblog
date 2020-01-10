@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Create new article</h1>
+<form action="" method="post" enctype="multipart/form-data" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.title.label }}<br>
+        {{ form.title(class_="form-control") }}
+        {% for error in form.title.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        {{ form.content.label }}<br>
+        {{ form.content(class_="form-control", rows="5") }}
+        {% for error in form.content.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        {{ form.category.label }}<br>
+        {{ form.category(class_="form-control") }}
+        {% for error in form.category.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        {{ form.image.label }}<br>
+        {% if article.image %}
+            {% set path= 'uploads/' + article.image %}
+            <img src="{{ url_for('static', filename=path) }}" style="float: left; width: 40%; margin: 0 24px 12px 0;">
+            <p>If you want to change the image, please select an image below.</p>
+        {% else %}
+            <p>The article currently has no image.</p>
+        {% endif %}
+        {{ form.image(class_="form-control-file") }}
+        {% for error in form.image.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </div>
+    <div>{{ form.submit(class_="btn btn-primary") }}</div>
+</form>
+{% endblock %}

@@ -21,14 +21,17 @@
           <a href="{{ url_for('update', id=article.id) }}" class="btn btn-primary">
             <i class="fas fa-edit"></i>
           </a>
-          <button class="btn btn-danger">
+          <a href="{{ url_for('delete', id=article.id) }}" class="btn btn-danger">
             <i class="fas fa-trash-alt"></i>
-          </button>
+          </a>
         </span>
       </div>
       <div class="card-text">
-        {% set path= 'uploads/' + article.image %}
-        <img src="{{ url_for('static', filename=path) }}" style="float: left; width: 40%; margin: 0 24px 12px 0;">
+        {% if article.image %}
+          {% set path= 'uploads/' + article.image %}
+          <img src="{{ url_for('static', filename=path) }}" style="float: left; width: 40%; margin: 0 24px 12px 0;">
+        {% endif %}
+        <small>Written: {{ article.created }}</small>
         {% set paras = article.content.split('\n') %}
         {% for p in paras %}
           {% if p %}
@@ -40,5 +43,20 @@
   </div>
 </div>
 {% endfor %}
+
+<nav aria-label="...">
+  <ul class="pager">
+    <li class="previous{% if not prev_url %} disabled{% endif %}">
+      <a href="{{ prev_url or '#' }}">
+        <span aria-hidden="true">&larr;</span> Newer posts
+      </a>
+    </li>
+    <li class="next{% if not next_url %} disabled{% endif %}">
+      <a href="{{ next_url or '#' }}">
+        Older posts <span aria-hidden="true">&rarr;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
 
 {% endblock %}

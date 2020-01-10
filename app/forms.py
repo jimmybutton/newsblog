@@ -14,7 +14,10 @@ class ArticleForm(FlaskForm):
                 ('sports', 'Sports')],
         validators=[DataRequired()])
     image = FileField('Feature image', validators=[
-        FileRequired(),
+        # FileRequired(),
         FileAllowed(['jpg','png'], 'Images (jpg, png) only!')
     ])
     submit = SubmitField('Submit article')
+
+class ArticleDeleteForm(FlaskForm):
+    submit = SubmitField('Delete article')
