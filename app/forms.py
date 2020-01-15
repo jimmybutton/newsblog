@@ -15,7 +15,7 @@ class ArticleForm(FlaskForm):
         validators=[DataRequired()])
     image = FileField('Feature image', validators=[
         # FileRequired(),
-        FileAllowed(['jpg','png'], 'Images (jpg, png) only!')
+        FileAllowed(['jpg','jpeg','png'], 'Images (jpg, jpeg, png) only!')
     ])
     submit = SubmitField('Submit article')
 

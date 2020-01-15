@@ -15,15 +15,18 @@
   <div class="row no-gutters">
     <div class="card-body">
       <div class="card-title d-flex justify-content-between">
-        <span class="h3">{{ article.title }}</span>
-        <small class="text-muted align-self-center">{{ article.category }}</small>
+        <div><span class="h3">{{ article.title }}</span>
+        <span class="badge badge-secondary">{{ article.category }}</span></div>
         <span>
           <a href="{{ url_for('update', id=article.id) }}" class="btn btn-primary">
             <i class="fas fa-edit"></i>
           </a>
-          <a href="{{ url_for('delete', id=article.id) }}" class="btn btn-danger">
+          <!-- <a href="{{ url_for('delete', id=article.id) }}" class="btn btn-danger">
             <i class="fas fa-trash-alt"></i>
-          </a>
+          </a> -->
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" data-articleid="{{ article.id }}" data-articletitle="{{ article.title }}">
+            <i class="fas fa-trash-alt"></i>
+          </button>
         </span>
       </div>
       <div class="card-text">
@@ -44,19 +47,41 @@
 </div>
 {% endfor %}
 
-<nav aria-label="...">
-  <ul class="pager">
-    <li class="previous{% if not prev_url %} disabled{% endif %}">
-      <a href="{{ prev_url or '#' }}">
+<!-- Pagination -->
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item{% if not prev_url %} disabled{% endif %}">
+      <a class="page-link" href="{{ prev_url or '#' }}">
         <span aria-hidden="true">&larr;</span> Newer posts
       </a>
     </li>
-    <li class="next{% if not next_url %} disabled{% endif %}">
-      <a href="{{ next_url or '#' }}">
+    <li class="page-item{% if not next_url %} disabled{% endif %}">
+      <a class="page-link" href="{{ next_url or '#' }}">
         Older posts <span aria-hidden="true">&rarr;</span>
       </a>
     </li>
   </ul>
 </nav>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirm deletion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete the article <b id="articleTitle"></b>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <a href="#" type="button" class="btn btn-primary" id="deleteBtn">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

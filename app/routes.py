@@ -75,13 +75,12 @@ def update(id):
         form.category.data = article.category
     return render_template('update.html', title='Edit Article', form=form, article=article)
 
-@app.route('/delete/<id>', methods=['GET', 'POST'])
+@app.route('/delete/<id>', methods=['GET'])
 def delete(id):
     article = Article.query.filter_by(id=id).first_or_404()
-    form = ArticleDeleteForm()
-    if form.validate_on_submit():
+    title = article.title
+    if article:
         db.session.delete(article)
         db.session.commit()
-        flash("The article have been deleted.")
-        return redirect(url_for('index'))
-    return render_template('delete.html', title='Delete Article', form=form, article=article)
+        flash(f"The article {title} has been deleted.")
+    return redirect(url_for('index'))
