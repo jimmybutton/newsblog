@@ -93,10 +93,15 @@ def update(id):
 @app.route('/delete/<id>', methods=['GET'])
 def delete(id):
     article = Article.query.get(id)
-    title = article.title
     if article:
+        title = article.title
+        # first delete image from upload folder!
+        filename = os.path.join(app.config['UPLOAD_FOLDER'], article.image)
+        if os.path.exists(filename):
+            os.remove(filename)
+            # flash(f"Image {filename} has been deleted.")
+        # remove article from db
         db.session.delete(article)
         db.session.commit()
-        # also delete image from upload folder!
         flash(f"The article {title} has been deleted.")
     return redirect(url_for('index'))
