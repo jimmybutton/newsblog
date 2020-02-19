@@ -16,7 +16,7 @@
     <div class="card-body">
       <div class="card-title d-flex justify-content-between">
         <div><span class="h3">{{ article.title }}</span>
-        <span class="badge badge-secondary">{{ article.category }}</span></div>
+        <span class="badge badge-secondary">{{ article.category.name }}</span></div>
         <span>
           <a href="{{ url_for('update', id=article.id) }}" class="btn btn-primary">
             <i class="fas fa-edit"></i>

@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for, request, current_app
 from app import app, db
 from app.forms import ArticleForm, ArticleDeleteForm
-from app.models import Article
+from app.models import Article, Category
 from werkzeug.utils import secure_filename
 import os
 from datetime import datetime
@@ -41,23 +41,24 @@ def create():
             filename = upload_image(form.image.data)
         else:
             filename = ""
+        category = Category.query.get(int(form.category.data))
         # store article in db
         article = Article(
             title=form.title.data, 
             content=form.content.data, 
-            category=form.category.data,
+            category=category,
             image=filename
         )
         db.session.add(article)
         db.session.commit()
         flash('New article submitted: {}, category: {}'.format(
-            form.title.data, form.category.data))
+            form.title.data, category.name))
         return redirect(url_for('index'))
     return render_template('create.html', title='New Article', form=form)
 
 @app.route('/update/<id>', methods=['GET', 'POST'])
 def update(id):
-    article = Article.query.filter_by(id=id).first_or_404()
+    article = Article.query.get(id)
     form = ArticleForm()
     if form.validate_on_submit():
         if form.image.data:
@@ -65,19 +66,19 @@ def update(id):
             article.image = filename
         article.title = form.title.data
         article.content = form.content.data
-        article.category = form.category.data
+        article.category = Category.query.get(int(form.category.data))
         db.session.commit()
         flash("Your changes have been saved.")
         return redirect(url_for('index'))
     elif request.method == "GET":
         form.title.data = article.title
         form.content.data = article.content
-        form.category.data = article.category
+        form.category.data = str(article.category.id)
     return render_template('update.html', title='Edit Article', form=form, article=article)
 
 @app.route('/delete/<id>', methods=['GET'])
 def delete(id):
-    article = Article.query.filter_by(id=id).first_or_404()
+    article = Article.query.get(id)
     title = article.title
     if article:
         db.session.delete(article)
