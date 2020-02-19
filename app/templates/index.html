@@ -1,13 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="text-center" style="margin-bottom: 16px;">
-  <a href="{{ url_for('create') }}">
-    <button type="button" class="btn btn-primary">
-      <i class="fas fa-plus"></i>
-      New Article
-    </button>
-  </a>
+
+<div class="d-flex justify-content-between align-items-center py-2 flex-wrap">
+  <div>
+    {% if category_name %}
+    <h1>Category: {{ category_name }}</h1>
+    {% else %}
+    <h1>All Articles</h1>
+    {% endif %}
+  </div>
+  <div class="ml-auto">
+    <a href="{{ url_for('create') }}" type="button" class="btn btn-primary">
+      <i class="fas fa-plus"></i> New Article
+    </a>
+  </div>
+</div>
+
+<div class="py-2">
+  <form class="form-inline" action="{{ url_for('index') }}" , method="get">
+    <div class="form-row align-items-center">
+      <div class="col-auto">
+        <label for="category">Filter by category</label>
+      </div>
+      <div class="col-auto">
+        <select class="custom-select" id="category" name="category">
+          <option value="0" selected>All categories</option>
+          {% for category in categories %}
+          <option value="{{ category.id }}">{{ category.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary ml-2"><i class="fas fa-sync-alt"></i></button>
+      </div>
+    </div>
+  </form>
 </div>
 
 {% for article in articles %}
@@ -16,7 +44,7 @@
     <div class="card-body">
       <div class="card-title d-flex justify-content-between">
         <div><span class="h3">{{ article.title }}</span>
-        <span class="badge badge-secondary">{{ article.category.name }}</span></div>
+          <span class="badge badge-secondary">{{ article.category.name }}</span></div>
         <span>
           <a href="{{ url_for('update', id=article.id) }}" class="btn btn-primary">
             <i class="fas fa-edit"></i>
@@ -24,22 +52,23 @@
           <!-- <a href="{{ url_for('delete', id=article.id) }}" class="btn btn-danger">
             <i class="fas fa-trash-alt"></i>
           </a> -->
-          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" data-articleid="{{ article.id }}" data-articletitle="{{ article.title }}">
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal"
+            data-articleid="{{ article.id }}" data-articletitle="{{ article.title }}">
             <i class="fas fa-trash-alt"></i>
           </button>
         </span>
       </div>
       <div class="card-text">
         {% if article.image %}
-          {% set path= 'uploads/' + article.image %}
-          <img src="{{ url_for('static', filename=path) }}" style="float: left; width: 40%; margin: 0 24px 12px 0;">
+        {% set path= 'uploads/' + article.image %}
+        <img src="{{ url_for('static', filename=path) }}" style="float: left; width: 40%; margin: 0 24px 12px 0;">
         {% endif %}
-        <small>Written: {{ article.created }}</small>
+        <small>Written: {{ moment(article.created).format('LLL') }}</small>
         {% set paras = article.content.split('\n') %}
         {% for p in paras %}
-          {% if p %}
-            <p>{{ p }}</p>
-          {% endif %}
+        {% if p %}
+        <p>{{ p }}</p>
+        {% endif %}
         {% endfor %}
       </div>
     </div>
@@ -64,7 +93,8 @@
 </nav>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

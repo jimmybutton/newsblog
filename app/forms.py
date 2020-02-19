@@ -10,7 +10,7 @@ class ArticleForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
     category = SelectField('Category', 
-        choices=[(str(c.id), c.name) for c in Category.query.order_by(Category.name.asc()).all()],
+        choices=[("", "Please select")] + [(str(c.id), c.name) for c in Category.query.order_by(Category.name.asc()).all()],
         validators=[DataRequired()])
     image = FileField('Feature image', validators=[
         # FileRequired(),

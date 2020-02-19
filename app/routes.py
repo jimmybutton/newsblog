@@ -27,11 +27,25 @@ def upload_image(imagefiledata):
 @app.route('/')
 @app.route('/index')
 def index():
+    category_id = request.args.get('category', 0, type=int)
     page = request.args.get('page', 1, type=int)
-    articles = Article.query.order_by(Article.created.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
-    next_url = url_for('index', page=articles.next_num) if articles.has_next else None
-    prev_url = url_for('index', page=articles.prev_num) if articles.has_prev else None
-    return render_template('index.html', title='Home', articles=articles.items, next_url=next_url, prev_url=prev_url)
+    if category_id == 0:  # 0 meaning all categories
+        articles = Article.query.order_by(Article.created.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
+        next_url = url_for('index', page=articles.next_num) if articles.has_next else None
+        prev_url = url_for('index', page=articles.prev_num) if articles.has_prev else None
+        category_name = None
+    else:
+        category = Category.query.get(category_id)
+        if not category:
+            flash('Category does not exist.'.format(category_id))
+            return redirect(url_for('index'))
+        articles = Article.query.filter_by(category=category).order_by(Article.created.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
+        next_url = url_for('index', page=articles.next_num, category=category.id) if articles.has_next else None
+        prev_url = url_for('index', page=articles.prev_num, category=category.id) if articles.has_prev else None
+        category_name = category.name
+    categories = Category.query.order_by(Category.name.asc()).all()
+    return render_template('index.html', title='Home', articles=articles.items, categories=categories, 
+                            category_name=category_name, next_url=next_url, prev_url=prev_url)
 
 @app.route('/create', methods=['GET', 'POST'])
 def create():
@@ -83,5 +97,6 @@ def delete(id):
     if article:
         db.session.delete(article)
         db.session.commit()
+        # also delete image from upload folder!
         flash(f"The article {title} has been deleted.")
     return redirect(url_for('index'))
