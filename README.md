@@ -1,23 +1,33 @@
 # newsblog
 A simple news blog with CRUD functionality based on flask and bootstrap
 
-### ToDo:
-* DONE adding edit and delete functionality
-* DONE add pagination
-* DONE show create date in article (flask-moment)
-* DONE add functionality to filter based on categories
-* DONE add new table for categories
-* DONE delete uploaded images when deleting an article
+### Functionality
+* Add, edit and delete blog posts including feature image
+* Pagination
+* Show create date in article with flask-moment
+* Filter posts based on categories
+* Delete uploaded images when deleting an article
+
+### ToDo
 * have a cancel button to return to the last page when editing / updating an article
 * add search functionality
 
-### Requirements
+## Setup
 
-install with pip install -r requirements.txt
-Freeze with pip freeze > requirements.txt
+### Install dependencies
+```
+pip install -r requirements.txt
+```
 
-flask
-flask-wtf
-flask-sqlalchemy
-flask-migrate
-flask-dotenv
+Uses:
+- flask
+- flask-wtf
+- flask-sqlalchemy
+- flask-migrate
+- flask-dotenv
+
+### run application
+```
+run flask
+```
+
