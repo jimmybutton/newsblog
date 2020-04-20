@@ -1,6 +1,8 @@
 # newsblog
 A simple news blog with CRUD functionality based on flask and bootstrap
 
+![alt text](../media/newsblog.png?raw=true)
+
 ### Functionality
 * Add, edit and delete articles with feature image
 * Filter articles based on categories
