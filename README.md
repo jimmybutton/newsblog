@@ -2,15 +2,18 @@
 A simple news blog with CRUD functionality based on flask and bootstrap
 
 ### Functionality
-* Add, edit and delete blog posts including feature image
+* Add, edit and delete articles with feature image
+* Filter articles based on categories
+* Show notifications of user actions (flash)
+* Show confirm modal before deleting articles
+* Delete uploaded images when deleting or updating an article
 * Pagination
-* Show create date in article with flask-moment
-* Filter posts based on categories
-* Delete uploaded images when deleting an article
+* Display create date with flask-moment
 
 ### ToDo
-* have a cancel button to return to the last page when editing / updating an article
-* add search functionality
+* add search functionality (elasticsearch)
+* use blueprints to avoid circular dependencies
+* return to last page viewed when canceling a form
 
 ## Setup
 
