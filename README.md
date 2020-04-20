@@ -25,14 +25,7 @@ A simple news blog with CRUD functionality based on flask and bootstrap 4
 pip install -r requirements.txt
 ```
 
-Uses:
-- flask
-- flask-wtf
-- flask-sqlalchemy
-- flask-migrate
-- flask-dotenv
-
-### run application
+### Run application
 ```
 run flask
 ```
