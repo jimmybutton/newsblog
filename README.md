@@ -1,10 +1,11 @@
 # newsblog
-A simple news blog with CRUD functionality based on flask and bootstrap
+A simple news blog with CRUD functionality based on flask and bootstrap 4
 
 ![alt text](../media/newsblog.png?raw=true)
 
 ### Functionality
 * Add, edit and delete articles with feature image
+* SQLAlchemy and SQLite for persistence
 * Filter articles based on categories
 * Show notifications of user actions (flash)
 * Show confirm modal before deleting articles
