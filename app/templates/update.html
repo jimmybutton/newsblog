@@ -39,6 +39,6 @@
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </div>
-    <div>{{ form.submit(class_="btn btn-primary") }}</div>
+    <div>{{ form.submit(class_="btn btn-primary") }} <a class="btn btn-secondary m-1" href="{{ url_for('index') }}">Cancel</a></div>
 </form>
 {% endblock %}
