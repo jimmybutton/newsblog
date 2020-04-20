@@ -24,6 +24,12 @@ def upload_image(imagefiledata):
     f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     return filename
 
+def delete_upload_image(imagename):
+    # delete image from upload folder
+    filename = os.path.join(app.config['UPLOAD_FOLDER'], imagename)
+    if os.path.exists(filename):
+        os.remove(filename)
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -76,6 +82,9 @@ def update(id):
     form = ArticleForm()
     if form.validate_on_submit():
         if form.image.data:
+            # first delete image from upload folder!
+            delete_upload_image(article.image)
+            # upload new image
             filename = upload_image(form.image.data)
             article.image = filename
         article.title = form.title.data
@@ -96,10 +105,8 @@ def delete(id):
     if article:
         title = article.title
         # first delete image from upload folder!
-        filename = os.path.join(app.config['UPLOAD_FOLDER'], article.image)
-        if os.path.exists(filename):
-            os.remove(filename)
-            # flash(f"Image {filename} has been deleted.")
+        delete_upload_image(article.image)
+        # flash(f"Image {filename} has been deleted.")
         # remove article from db
         db.session.delete(article)
         db.session.commit()
